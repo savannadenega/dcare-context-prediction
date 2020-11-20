@@ -6,14 +6,15 @@
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+
 from scipy.signal import savgol_filter
 from sklearn.cross_decomposition import PLSRegression
 from sklearn.model_selection import KFold, cross_val_predict, train_test_split
 from sklearn.metrics import accuracy_score
 import os
 from pathlib import Path
-import csv
+
+from src.dcaredatasetsimulator.dcare_dataset_simulator_csv import generate_scenarios_to_csv
 
 global pls_binary
 
@@ -22,6 +23,7 @@ def train():
     # Load data into a Pandas dataframe
     dirname = Path(__file__).parent.parent
     filepath = os.path.join(dirname, 'db/milk-powder.csv')
+    # filepath = os.path.join(dirname, 'db/dataset.csv')
     data = pd.read_csv(filepath)
     # Extract first and last label in a new dataframe
     binary_data = data[(data['labels'] == 5) | (data['labels'] == 6)]
@@ -54,6 +56,7 @@ def pls_da(X_train, y_train, X_test):
 
 
 # Execucao
+generate_scenarios_to_csv(600)
 pls_binary = PLSRegression(n_components=2)
 X_binary, y_binary = train()
 accuracy = []
@@ -63,5 +66,3 @@ for train, test in cval.split(X_binary):
 
     accuracy.append(accuracy_score(y_binary[test], y_pred))
 print("Average accuracy on 10 splits: ", np.array(accuracy).mean())
-
-
