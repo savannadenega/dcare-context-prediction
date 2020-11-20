@@ -1,5 +1,5 @@
 # dcare-context-prediction
-Projeto para desenvolvimento do módulo de predição de contexto do modelo DCARE.
+Projeto para desenvolvimento modelo DCARE.
 
 ## Rescursos utilizados
 - [python3](https://www.python.org/downloads/)
