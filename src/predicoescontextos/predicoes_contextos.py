@@ -1,5 +1,7 @@
 # https://scikit-learn.org/stable/
 # https://nirpyresearch.com/partial-least-squares-regression-python/
+# https://scikit-learn.org/stable/modules/generated/sklearn.cross_decomposition.PLSRegression.html
+# https://drive.google.com/file/d/1Y1iG4qDCuMcNp-aZgUFY5LPdVQeM2XiQ/view
 
 from sys import stdout
 import numpy as np
@@ -15,8 +17,8 @@ from sklearn.metrics import mean_squared_error, r2_score
 pls = PLSRegression(n_components=5)
 
 # Fit
-# TODO adicionar dataset gerado pelo gerador de dataset
-data = pd.read_csv('/dataset/peach_spectra_brix.csv')
+# TODO adicionar dcaredatasetsimulator gerado pelo gerador de dcaredatasetsimulator
+data = pd.read_csv('/dcaredatasetsimulator/peach_spectra_brix.csv')
 
 # Get reference values
 # TODO mudar nomes das colunas e linhas para leitura
