@@ -10,12 +10,15 @@ from scipy.signal import savgol_filter
 from sklearn.cross_decomposition import PLSRegression
 from sklearn.model_selection import KFold, cross_val_predict, train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn import metrics
 import os
 from pathlib import Path
+import matplotlib.pyplot as plt
 
 from src.dcaredatasetsimulator.dcare_dataset_simulator_csv import generate_scenarios_to_csv
 
 global pls_binary
+
 
 def train():
     # Next, we load the data, extract the first and the last label, and do some cleaning and preprocessing steps
@@ -55,13 +58,33 @@ def pls_da(X_train, y_train, X_test):
 
 
 # Execucao
-generate_scenarios_to_csv(600)
+# generate_scenarios_to_csv(1000)
 pls_binary = PLSRegression(n_components=2)
 X_binary, y_binary = train()
 accuracy = []
 cval = KFold(n_splits=10, shuffle=True, random_state=19)
+pls_binary.fit(X_binary, y_binary)
+y_pred = []
 for train, test in cval.split(X_binary):
     y_pred = pls_da(X_binary[train, :], y_binary[train], X_binary[test, :])
 
     accuracy.append(accuracy_score(y_binary[test], y_pred))
 print("Average accuracy on 10 splits: ", np.array(accuracy).mean())
+
+# disp = metrics.plot_confusion_matrix(pls_binary, X_binary, y_binary)
+# disp.figure_.suptitle("Confusion Matrix")
+# print(f"Confusion matrix:\n{disp.confusion_matrix}")
+# plt.show()
+
+# Predicted values
+y_pred = ["0", "1", "0", "1", "1"]
+# Actual values
+y_act = ["1", "1", "0", "1", "1"]
+# Printing the confusion matrix
+# The columns will show the instances predicted for each label,
+# and the rows will show the actual number of instances for each label.
+print(metrics.confusion_matrix(y_act, y_pred, labels=["0", "1"]))
+# print(metrics.confusion_matrix(y_binary, y_pred, labels=["0", "1"]))
+# Printing the precision and recall, among other metrics
+print(metrics.classification_report(y_act, y_pred, labels=["0", "1"]))
+# print(metrics.classification_report(y_binary, y_pred, labels=["0", "1"]))

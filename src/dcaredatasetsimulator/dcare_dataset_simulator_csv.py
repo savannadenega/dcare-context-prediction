@@ -4,6 +4,7 @@ from pathlib import Path
 from src.dcaredatasetsimulator.dcare_dataset_simulator import generate_random_scenario_sequence
 import time
 
+
 def generate_scenarios_to_csv(qt_scenarious):
     contextos = generate_random_scenario_sequence(qt_scenarious)
     contexto_dataset = contextos.lista_contextos
@@ -69,4 +70,4 @@ def generate_scenarios_to_csv(qt_scenarious):
         writer.writerows(row_list)
 
 
-generate_scenarios_to_csv(602)
+# generate_scenarios_to_csv(602)
