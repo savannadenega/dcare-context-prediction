@@ -1,7 +1,3 @@
-# https://scikit-learn.org/stable/
-# https://nirpyresearch.com/partial-least-squares-regression-python/
-# https://scikit-learn.org/stable/modules/generated/sklearn.cross_decomposition.PLSRegression.html
-# https://nirpyresearch.com/pls-discriminant-analysis-binary-classification-python/
 
 import numpy as np
 import pandas as pd
