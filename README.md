@@ -7,3 +7,7 @@ Projeto para desenvolvimento do modelo DCARE.
 ## Como executar
 - Necessária prévia instalação dos recursos acima
 
+## Bibliografia
+- [PLSRegression](https://scikit-learn.org/stable/modules/generated/sklearn.cross_decomposition.PLSRegression.html)
+- [pls-discriminant-analysis-binary-classification-python/](https://nirpyresearch.com/pls-discriminant-analysis-binary-classification-python/)
+- [partial-least-squares-regression-python](https://nirpyresearch.com/partial-least-squares-regression-python/)

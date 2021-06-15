@@ -64,7 +64,7 @@ def generate_scenarios_to_csv(qt_scenarious):
         row_list.append(list)
 
     dirname = Path(__file__).parent.parent
-    filename = os.path.join(dirname, 'db/dataset.csv')
+    filename = os.path.join(dirname, 'db/resources/dataset.csv')
     with open(filename, 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(row_list)

@@ -1,8 +1,10 @@
 
 import random
 from datetime import datetime, timedelta
-
 from src.api.input.contexto import Contexto
+
+
+# ############################### Objects
 
 
 class ContextoDataset:
@@ -17,23 +19,38 @@ class ContextoDataset:
         self.horario_inicio_final = horario_inicio_final
         self.necessario_alerta_cuidador = necessario_alerta_cuidador
 
+    def __str__(self):
+        return str(self.__class__) + ": " + str(self.__dict__)
+
 
 class ContextoDatasetRetorno:
     def __init__(self, lista_contextos, lista_resultados_esperados):
         self.lista_contextos = lista_contextos
         self.lista_resultados_esperados = lista_resultados_esperados
 
+    def __str__(self):
+        return str(self.__class__) + ": " + str(self.__dict__)
+
+
+# ############################### Methods
+
 
 def generate_random_full_scenario():
-    # estado_frequencia_cardiaca: se 3 ou 4 quantidade de aparições == 60
-    # atividade: se 1 quantidade de aparições == 60
-    # localizacao_semantica: se 1,2,3,4,5,6,7 ou 8 quantidade de aparições == 60
-    # duracao: se 1 == 60 vezes se 2 == 120 vezes
+    """
+    Infomações:
 
-    # possibilidades: repouso (1), normal (2), agitacaoRegular (3), agitacaoIrregular (4)
-    # possibilidades: parado (1), caminhada (2), corrida (3), emVeiculo (4)
-    # possibilidades: banheiro (1), quarto (2), sala (3), cozinha (4), varanda (5), patio (6), foraPatio (7)
-    # necessario_alerta_cuidador: 0 == false 1 == true
+    - Regras de execução:
+    estado_frequencia_cardiaca: se 3 ou 4 quantidade de aparições == 60
+    atividade: se 1 quantidade de aparições == 60
+    localizacao_semantica: se 1,2,3,4,5,6,7 ou 8 quantidade de aparições == 60
+    duracao: se 1 == 60 vezes se 2 == 120 vezes
+
+    - Campos:
+    estado_frequencia_cardiaca: repouso (1), normal (2), agitacaoRegular (3), agitacaoIrregular (4)
+    atividade: parado (1), caminhada (2), corrida (3), emVeiculo (4)
+    localizacao_semantica: banheiro (1), quarto (2), sala (3), cozinha (4), varanda (5), patio (6), foraPatio (7)
+    necessario_alerta_cuidador: 0 == false 1 == true
+    """
 
     # 1
     ataque_disfuncao_psicologica = ContextoDataset(1,
@@ -111,6 +128,22 @@ def generate_random_scenario_sequence(qt_scenarios):
 
     return ContextoDatasetRetorno(lista_contextos, lista_resultados_esperados)
 
-# Execucao teste
-# contextos_teste = generate_random_scenario_sequence(6)
-# print(contextos_teste)
+
+# ############################### Testes
+
+
+contextos_teste = generate_random_scenario_sequence(6)
+
+print("\n")
+
+print("-------------- Contextos - Quantidade: " + str(len(contextos_teste.lista_contextos)))
+for x in contextos_teste.lista_contextos:
+    print(x)
+
+print("\n")
+
+print("-------------- Contextos - Resultados esperados")
+for x in contextos_teste.lista_resultados_esperados:
+    print(x)
+
+print("\n")

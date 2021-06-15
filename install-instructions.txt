@@ -1,0 +1,5 @@
+- Install pip3
+https://linuxize.com/post/how-to-install-pip-on-ubuntu-18.04/
+
+- Configuration
+https://www.jetbrains.com/help/idea/pipenv.html
