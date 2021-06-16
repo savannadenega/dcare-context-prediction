@@ -23,7 +23,7 @@ def insert_context(context):
     logging.info("Context inserted on MySQL DB.")
 
 
-def get_context_by_id(id_cenario):
-    mycursor.execute("SELECT " + id_cenario + " FROM context")
-    logging.info("Getting context from MySQL DB of patient id: " + id_cenario)
+def get_contexts_by_patient_id(patient_id):
+    mycursor.execute("SELECT " + patient_id + " FROM context")
+    logging.info("Getting context from MySQL DB of patient id: " + patient_id)
     return mycursor.fetchall()

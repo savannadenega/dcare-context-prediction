@@ -1,11 +1,13 @@
 
 import logging
 from src.queue import queue_manager
+from src.api.input.contexto import Contexto
 
 
-def identify_behaviors(iot_data_response):
+def identify_behaviors(iot_data_response: Contexto):
     logging.info("Running behaviors identifier...")
     # TODO configurar identificacao de comportamentos/contextos
+    # iot_data_response["necessario_alerta_cuidador"]
     validate_necessary_post_danger_alert_patient("patient_id", "context_id")
 
 
