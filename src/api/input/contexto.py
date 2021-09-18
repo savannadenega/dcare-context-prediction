@@ -1,4 +1,3 @@
-
 class Contexto:
     def __init__(self, id_cenario, estado_frequencia_cardiaca, atividade, localizacao_semantica,
                  necessario_alerta_cuidador, data_hora):

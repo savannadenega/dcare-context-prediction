@@ -18,5 +18,5 @@ def run_schedule_dcare_tasks():
     context_identification.validate_necessary_post_danger_alert_patient("patient_id", "context_id")
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

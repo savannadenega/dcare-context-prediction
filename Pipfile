@@ -17,6 +17,7 @@ schedule = "*"
 mlxtend = "*"
 openpyxl = "*"
 xlrd = "*"
+self = "*"
 
 [dev-packages]
 

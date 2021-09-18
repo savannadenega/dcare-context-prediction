@@ -100,18 +100,20 @@ def generate_random_full_scenario():
 def generate_random_scenario_sequence(qt_scenarios):
     current_time = datetime.now()
     lista_contextos = []
-    lista_resultados_esperados = []
+    lista_cenarios = []
 
     for x in range(qt_scenarios):
 
+        print("-------------------- Iniciando geração de cenários ---------------")
         cenario = generate_random_full_scenario()
+        print("-------------- Cenário gerado: " + str(cenario.id_cenario))
 
         estado_frequencia_cardiaca = random.choice(cenario.estado_frequencia_cardiaca)
         atividade = random.choice(cenario.atividade)
         localizacao_semantica = random.choice(cenario.localizacao_semantica)
         cenario_duracao = random.choice(cenario.duracao)
 
-        lista_resultados_esperados.append(cenario.id_cenario)
+        lista_cenarios.append(cenario.id_cenario)
 
         if x == 0:
             current_time = datetime.now()
@@ -126,24 +128,33 @@ def generate_random_scenario_sequence(qt_scenarios):
 
             current_time = current_time + timedelta(0, 1)
 
-    return ContextoDatasetRetorno(lista_contextos, lista_resultados_esperados)
+    print("\n")
+    print("-------------- Lista de Contextos:")
+    for x in lista_contextos:
+        print(x)
+
+    print("\n")
+    print("-------------- Lista de Cenários:")
+    for x in lista_cenarios:
+        print(x)
+
+    return ContextoDatasetRetorno(lista_contextos, lista_cenarios)
 
 
-# ############################### Testes
+# ###################### Testes
 
+# contextos_teste = generate_random_scenario_sequence(6)
 
-contextos_teste = generate_random_scenario_sequence(6)
-
-print("\n")
-
-print("-------------- Contextos - Quantidade: " + str(len(contextos_teste.lista_contextos)))
-for x in contextos_teste.lista_contextos:
-    print(x)
-
-print("\n")
-
-print("-------------- Contextos - Resultados esperados")
-for x in contextos_teste.lista_resultados_esperados:
-    print(x)
-
-print("\n")
+# print("\n")
+#
+# print("-------------- Contextos - Quantidade: " + str(len(contextos_teste.lista_contextos)))
+# for x in contextos_teste.lista_contextos:
+#     print(x)
+#
+# print("\n")
+#
+# print("-------------- Contextos - Resultados esperados")
+# for x in contextos_teste.lista_resultados_esperados:
+#     print(x)
+#
+# print("\n")

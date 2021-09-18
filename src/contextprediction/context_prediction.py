@@ -1,4 +1,3 @@
-
 import numpy as np
 import pandas as pd
 from scipy.signal import savgol_filter
@@ -10,83 +9,87 @@ from pathlib import Path
 import logging
 from sklearn import metrics
 from src.dcaredatasetsimulator.dcare_dataset_simulator_csv import generate_scenarios_to_csv
+from src.dcaredatasetsimulator.dcare_dataset_simulator import generate_random_scenario_sequence
 
 
-global pls_binary
+class Prediction:
+    global pls_binary
 
+    def __init__(self):
+        print("Creating Prediction class")
 
-def train(self):
-    """ Next, we load the data, extract the first and the last label, and do some cleaning and preprocessing steps """
+    def train(self):
+        """ Next, we load the data, extract the first and the last label, and do some cleaning and preprocessing steps """
 
-    """ Load data into a Pandas dataframe """
-    dirname = Path(__file__).parent.parent
-    filepath = os.path.join(dirname, 'db/resources/dataset.csv')
-    # filepath = os.path.join(dirname, 'db/resources/milk-powder.csv')
-    data = pd.read_csv(filepath)
+        """ Load data into a Pandas dataframe """
+        dirname = Path(__file__).parent.parent
+        filepath = os.path.join(dirname, 'db/resources/dataset.csv')
+        # filepath = os.path.join(dirname, 'db/resources/milk-powder.csv')
+        data = pd.read_csv(filepath)
 
-    """ Extract first and last label in a new dataframe """
-    binary_data = data[(data['labels'] == 5) | (data['labels'] == 6)]
+        """ Extract first and last label in a new dataframe """
+        binary_data = data[(data['labels'] == 5) | (data['labels'] == 6)]
 
-    """ Read data into a numpy array and apply simple smoothing """
-    X_binary = savgol_filter(binary_data.values[:, 2:], 15, polyorder=3, deriv=0)
+        """ Read data into a numpy array and apply simple smoothing """
+        X_binary = savgol_filter(binary_data.values[:, 2:], 15, polyorder=3, deriv=0)
 
-    """ Read categorical variables """
-    y_binary = binary_data["labels"].values
+        """ Read categorical variables """
+        y_binary = binary_data["labels"].values
 
-    """ Map variables to 0 and 1 """
-    y_binary = (y_binary == 6).astype('uint8')
+        """ Map variables to 0 and 1 """
+        y_binary = (y_binary == 6).astype('uint8')
 
-    """ Now it’s time for the actual PLS decomposition, which is as simple as define the PLS regression object """
-    """ pls_binary = PLSRegression(n_components=2) """
-    """ Fit and transform the data """
-    """ X_pls = pls_binary.fit_transform(X_binary, y_binary)[0] """
+        """ Now it’s time for the actual PLS decomposition, which is as simple as define the PLS regression object """
+        """ pls_binary = PLSRegression(n_components=2) """
+        """ Fit and transform the data """
+        """ X_pls = pls_binary.fit_transform(X_binary, y_binary)[0] """
 
-    return X_binary, y_binary
+        return X_binary, y_binary
 
+    def pls_da(X_train, y_train, X_test):
+        """ Define the PLS object for binary classification """
+        plsda = PLSRegression(n_components=2)
 
-def pls_da(X_train, y_train, X_test):
-    """ Define the PLS object for binary classification """
-    plsda = PLSRegression(n_components=2)
+        """ Fit the training set """
+        plsda.fit(X_train, y_train)
 
-    """ Fit the training set """
-    plsda.fit(X_train, y_train)
+        """ Binary prediction on the test set, done with thresholding """
+        binary_prediction = (pls_binary.predict(X_test)[:, 0] > 0.5).astype('uint8')
 
-    """ Binary prediction on the test set, done with thresholding """
-    binary_prediction = (pls_binary.predict(X_test)[:, 0] > 0.5).astype('uint8')
+        return binary_prediction
 
-    return binary_prediction
+    def predict(self):
+        logging.info("Predicting...")
 
+        """ Setting configuration """
+        pls_binary = PLSRegression(n_components=2)
 
-def predict(self):
-    logging.info("Predicting...")
+        """ Training model """
+        X_binary, y_binary = self.train()
+        accuracy = []
 
-    """ Setting configuration """
-    pls_binary = PLSRegression(n_components=2)
+        """ Setting splits """
+        cval = KFold(n_splits=10, shuffle=True, random_state=19)
 
-    """ Training model """
-    X_binary, y_binary = self.train()
-    accuracy = []
+        """ Predicting """
+        pls_binary.fit(X_binary, y_binary)
+        y_pred = []
 
-    """ Setting splits """
-    cval = KFold(n_splits=10, shuffle=True, random_state=19)
+        """ Testing """
+        for train, test in cval.split(X_binary):
+            y_pred = self.pls_da(X_binary[train, :], y_binary[train], X_binary[test, :])
 
-    """ Predicting """
-    pls_binary.fit(X_binary, y_binary)
-    y_pred = []
+            accuracy.append(accuracy_score(y_binary[test], y_pred))
 
-    """ Testing """
-    for train, test in cval.split(X_binary):
-        y_pred = pls_da(X_binary[train, :], y_binary[train], X_binary[test, :])
-
-        accuracy.append(accuracy_score(y_binary[test], y_pred))
-
-    print("Prediction result - Average accuracy on 10 splits: ", np.array(accuracy).mean())
+        print("Prediction result - Average accuracy on 10 splits: ", np.array(accuracy).mean())
 
 
 # ############################### Tests
 
-# generate_scenarios_to_csv(1000)
-# predict()
+# generate_scenarios_to_csv(2)
+generate_random_scenario_sequence(6)
+prediction = Prediction()
+prediction.predict()
 
 # disp = metrics.plot_confusion_matrix(pls_binary, X_binary, y_binary)
 # disp.figure_.suptitle("Confusion Matrix")
